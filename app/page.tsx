@@ -225,13 +225,13 @@ export default async function Home() {
           <div className="flex items-center gap-3">
             <Link
               className="hidden text-sm font-semibold text-muted transition hover:text-slate-950 sm:inline-flex"
-              href="#waitlist"
+              href="/login"
             >
               Login
             </Link>
             <Link
               className="inline-flex items-center justify-center rounded-full bg-slate-950 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800"
-              href="#waitlist"
+              href="/register"
             >
               Create account
             </Link>
@@ -272,7 +272,7 @@ export default async function Home() {
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 className="inline-flex items-center justify-center rounded-2xl bg-slate-950 px-7 py-4 text-base font-bold text-white transition hover:bg-slate-800"
-                href="#waitlist"
+                href="/register"
               >
                 Get Started
               </Link>
@@ -400,7 +400,10 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="border-y border-border/70 bg-white py-24" id="how-it-works">
+      <section
+        className="content-auto border-y border-border/70 bg-white py-24"
+        id="how-it-works"
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             description="Start pooling your bankroll in four simple, secure steps."
@@ -425,7 +428,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="bg-slate-50 py-24">
+      <section className="content-auto bg-slate-50 py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             align="left"
@@ -453,7 +456,10 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="overflow-hidden bg-white py-24" id="transparency">
+      <section
+        className="content-auto overflow-hidden bg-white py-24"
+        id="transparency"
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             description="We believe trust should feel visible in the interface, not hidden behind support messages."
@@ -491,7 +497,7 @@ export default async function Home() {
       </section>
 
       <section
-        className="border-y border-border/70 bg-slate-50 py-24"
+        className="content-auto border-y border-border/70 bg-slate-50 py-24"
         id="testimonials"
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -529,7 +535,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-24" id="faq">
+      <section className="content-auto bg-white py-24" id="faq">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             description="A few clear answers to set expectations while the user app grows page by page."
@@ -557,7 +563,7 @@ export default async function Home() {
       </section>
 
       <section
-        className="relative overflow-hidden bg-slate-950 py-24 text-white"
+        className="content-auto relative overflow-hidden bg-slate-950 py-24 text-white"
         id="waitlist"
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.2),_transparent_40%),radial-gradient(circle_at_bottom,_rgba(255,255,255,0.06),_transparent_48%)]" />
@@ -572,7 +578,7 @@ export default async function Home() {
           <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
             <Link
               className="inline-flex items-center justify-center rounded-2xl bg-white px-7 py-4 text-base font-bold text-slate-950 transition hover:bg-slate-100"
-              href="#waitlist-form"
+              href="/register"
             >
               Create Free Account
             </Link>
