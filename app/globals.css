@@ -7,6 +7,9 @@
   --brand: #2563eb;
   --border: #dbe4f0;
   --muted: #64748b;
+  --font-ui:
+    "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial,
+    sans-serif;
 }
 
 @theme inline {
@@ -16,7 +19,7 @@
   --color-brand: var(--brand);
   --color-muted: var(--muted);
   --color-surface: var(--surface);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-ui);
 }
 
 * {
@@ -32,7 +35,7 @@ body {
     radial-gradient(circle at top, rgba(96, 165, 250, 0.1), transparent 28%),
     var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-ui);
 }
 
 a,
