@@ -43,7 +43,7 @@ export async function GET() {
       {
         ok: false,
         message:
-          "The frontend could not reach the StakeLoop API. Check STAKELOOP_API_BASE_URL and try again.",
+          "We couldn't connect to Stakeloop right now. Please try again in a moment.",
       },
       { status: 502 },
     );

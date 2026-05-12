@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "local:recover": "node scripts/local-recover.mjs && npm install && npm run lint && npm run build"
   },
   "dependencies": {
     "next": "16.2.1",

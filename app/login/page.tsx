@@ -7,9 +7,9 @@ import { getPostAuthRedirect } from "@/lib/stakeloop-routing";
 import { getServerSession } from "@/lib/stakeloop-session";
 
 export const metadata: Metadata = {
-  title: "Login | StakeLoop",
+  title: "Login | Stakeloop",
   description:
-    "Log in to your StakeLoop account to access transparent sports performance tracking.",
+    "Log in to your Stakeloop account to access transparent sports performance tracking.",
 };
 
 const trustCards = [
@@ -43,7 +43,7 @@ export default async function LoginPage() {
           <div className="mx-auto flex w-full max-w-md flex-1 flex-col">
             <div className="mb-12">
               <span className="text-2xl font-black tracking-tight text-slate-950">
-                StakeLoop
+                Stakeloop
               </span>
             </div>
 
@@ -69,7 +69,7 @@ export default async function LoginPage() {
               <a className="transition hover:text-slate-950" href="#">
                 Terms of Service
               </a>
-              <span>© 2026 StakeLoop</span>
+              <span>© 2026 Stakeloop</span>
             </footer>
           </div>
         </section>
@@ -128,7 +128,7 @@ export default async function LoginPage() {
               <div className="relative aspect-[16/10] bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.12),_transparent_25%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] p-6">
                 <div className="rounded-[1.1rem] border border-white/8 bg-white/4 p-4">
                   <div className="flex items-center gap-2 text-[0.65rem] font-black uppercase tracking-[0.14em] text-slate-500">
-                    <span>$310</span>
+                    <span>₦310,000</span>
                     <span className="text-slate-700">Live Table</span>
                   </div>
                   <div className="mt-4 grid grid-cols-6 gap-2 text-[0.6rem] font-semibold text-slate-600">

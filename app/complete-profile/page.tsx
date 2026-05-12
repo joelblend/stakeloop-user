@@ -8,9 +8,9 @@ import { getPostAuthRedirect } from "@/lib/stakeloop-routing";
 import { getServerSession } from "@/lib/stakeloop-session";
 
 export const metadata: Metadata = {
-  title: "Complete Profile | StakeLoop",
+  title: "Complete Profile | Stakeloop",
   description:
-    "Complete your StakeLoop profile in two steps with verified bank details before accessing the dashboard.",
+    "Complete your Stakeloop profile in two steps with verified bank details before accessing the dashboard.",
 };
 
 export default async function CompleteProfilePage() {
@@ -20,12 +20,10 @@ export default async function CompleteProfilePage() {
     redirect("/login");
   }
 
-  if (!session.status.email_verified) {
-    redirect(getPostAuthRedirect(session));
-  }
+  const nextPath = getPostAuthRedirect(session);
 
-  if (session.status.profile_completed) {
-    redirect("/dashboard");
+  if (nextPath !== "/complete-profile") {
+    redirect(nextPath);
   }
 
   return (
@@ -36,7 +34,7 @@ export default async function CompleteProfilePage() {
           <div className="flex items-center gap-4">
             <Link
               className="text-sm font-medium text-slate-500 transition hover:text-blue-600"
-              href="mailto:support@stakeloop.io?subject=StakeLoop%20Profile%20Help"
+              href="mailto:support@stakeloop.io?subject=Stakeloop%20Profile%20Help"
             >
               Help
             </Link>
@@ -67,7 +65,7 @@ export default async function CompleteProfilePage() {
 
       <footer className="pb-10 text-center">
         <p className="text-xs font-medium tracking-[0.16em] text-slate-400 uppercase">
-          © 2026 StakeLoop. Profile access remains locked until onboarding is
+          © 2026 Stakeloop. Profile access remains locked until onboarding is
           complete.
         </p>
       </footer>

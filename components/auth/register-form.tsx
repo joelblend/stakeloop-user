@@ -53,6 +53,7 @@ export function RegisterForm() {
     router.prefetch("/login");
     router.prefetch("/verify-email");
     router.prefetch("/complete-profile");
+    router.prefetch("/terms-of-use");
   }, [router]);
 
   return (
@@ -113,7 +114,7 @@ export function RegisterForm() {
             );
           } catch {
             setFormMessage(
-              "The frontend could not reach the StakeLoop API. Check STAKELOOP_API_BASE_URL and try again.",
+              "We couldn't connect to Stakeloop right now. Please try again in a moment.",
             );
           } finally {
             setIsSubmitting(false);

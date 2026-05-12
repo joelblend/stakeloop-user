@@ -1,20 +1,20 @@
 import { NextResponse } from "next/server";
 
-import { type AuthSessionPayload } from "@/lib/stakeloop-api";
+import type { UserSlotCheckoutPayload } from "@/lib/stakeloop-api";
 import {
   clearSessionCookie,
   getAuthToken,
   requestBackend,
 } from "@/lib/stakeloop-session";
 
-export async function PUT(request: Request) {
+export async function POST(request: Request) {
   const token = await getAuthToken();
 
   if (!token) {
     return NextResponse.json(
       {
         ok: false,
-        message: "Log in again to complete your profile.",
+        message: "Log in again to reserve slots.",
       },
       { status: 401 },
     );
@@ -35,16 +35,19 @@ export async function PUT(request: Request) {
   }
 
   try {
-    const result = await requestBackend<AuthSessionPayload>("/api/auth/me/profile", {
-      method: "PUT",
-      body,
-      token,
-    });
+    const result = await requestBackend<UserSlotCheckoutPayload>(
+      "/api/user/slots/buy",
+      {
+        method: "POST",
+        body,
+        token,
+      },
+    );
 
     const response = NextResponse.json(
       result.payload ?? {
         ok: false,
-        message: "Unable to update your profile right now.",
+        message: "Unable to reserve slots right now.",
       },
       { status: result.status },
     );

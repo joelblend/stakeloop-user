@@ -18,7 +18,10 @@ export type OnboardingStatus = {
   can_purchase_slots: boolean;
   email_verified: boolean;
   profile_completed: boolean;
+  terms_accepted: boolean;
 };
+
+export type SlotType = "pro" | "regular";
 
 export type NigerianBank = {
   code: string;
@@ -51,6 +54,7 @@ export type BackendUser = {
   referral_code?: string | null;
   role?: string;
   state?: string | null;
+  terms_accepted_at?: string | null;
   username: string;
 };
 
@@ -125,11 +129,113 @@ export type UserSlotPurchase = {
   user_slot_offer_id: number;
 };
 
+export type SlotPurchasePricing = {
+  contract_value: number;
+  service_charge_amount: number;
+  service_charge_rate: number;
+  total_payable_amount: number;
+};
+
+export type PaymentTransactionRecord = {
+  amount?: number | string;
+  currency?: string;
+  id?: number;
+  payment_method?: string;
+  provider_reference?: string | null;
+  reference?: string;
+  resolved_at?: string | null;
+  status?: string;
+  type?: string;
+};
+
+export type UserSlotCheckoutPayload = {
+  covered_months: string[];
+  message: string;
+  pricing: SlotPurchasePricing;
+  purchase: UserSlotPurchase & {
+    created_at?: string;
+    updated_at?: string;
+    user_id?: number;
+  };
+  transaction?: PaymentTransactionRecord;
+};
+
+export type UserWalletEntry = {
+  amount: number;
+  balance_after: number;
+  balance_before: number;
+  category: string;
+  direction: string;
+  earning_month?: string | null;
+  id: number;
+  label: string;
+  meta?: Record<string, unknown> | null;
+  occurred_at?: string | null;
+  payout_month?: string | null;
+  reference: string;
+  source_id?: number | null;
+  source_type?: string | null;
+};
+
+export type UserWalletMonthSummary = {
+  capital_return_total: number;
+  credited_total: number;
+  debited_total: number;
+  entry_count: number;
+  month: string;
+  net_amount: number;
+  profit_share_total: number;
+  reversal_total: number;
+};
+
+export type UserWalletFilterCategory =
+  | "all"
+  | "profit_share"
+  | "capital_returns"
+  | "reversals";
+
+export type UserWalletFilters = {
+  category: UserWalletFilterCategory;
+  limit: number;
+  month?: string | null;
+  page: number;
+};
+
+export type UserWalletPagination = {
+  from: number;
+  has_more: boolean;
+  page: number;
+  per_page: number;
+  to: number;
+  total: number;
+  total_pages: number;
+};
+
+export type UserWalletPayload = {
+  current_balance: number;
+  filters: UserWalletFilters;
+  last_posted_at?: string | null;
+  month_summary: UserWalletMonthSummary;
+  monthly_history: UserWalletMonthSummary[];
+  pagination: UserWalletPagination;
+  recent_entries: UserWalletEntry[];
+  summary: {
+    capital_return_pro_total: number;
+    capital_return_regular_total: number;
+    entry_count: number;
+    profit_share_total: number;
+    reversal_total: number;
+    total_credits: number;
+    total_debits: number;
+  };
+};
+
 export type UserPurchasesPayload = {
   month: string;
   purchases: UserSlotPurchase[];
   slots_bought: number;
   slots_reserved: number;
+  wallet: UserWalletPayload;
 };
 
 type PilotWaitlistResult = {
@@ -179,7 +285,7 @@ export async function getApiHealth(): Promise<ApiHealth> {
     if (!response.ok) {
       return {
         ok: false,
-        message: "StakeLoop API is unavailable right now.",
+        message: "Stakeloop is temporarily unavailable right now.",
       };
     }
 
@@ -190,12 +296,12 @@ export async function getApiHealth(): Promise<ApiHealth> {
 
     return {
       ok: Boolean(payload.ok),
-      message: payload.message ?? "StakeLoop API is live.",
+      message: Boolean(payload.ok) ? "Stakeloop is online." : payload.message ?? "Stakeloop is temporarily unavailable right now.",
     };
   } catch {
     return {
       ok: false,
-      message: "StakeLoop API is unavailable right now.",
+      message: "Stakeloop is temporarily unavailable right now.",
     };
   }
 }

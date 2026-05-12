@@ -65,6 +65,7 @@ export function LoginForm() {
     router.prefetch("/register");
     router.prefetch("/dashboard");
     router.prefetch("/complete-profile");
+    router.prefetch("/terms-of-use");
     router.prefetch("/verify-email");
   }, [router]);
 
@@ -106,10 +107,7 @@ export function LoginForm() {
             }
 
             if (payload?.requires_2fa) {
-              setFormMessage(
-                payload.message?.trim() ||
-                  "This account requires two-factor verification. The dedicated 2FA screen has not been added yet.",
-              );
+              router.replace("/verify-2fa");
               return;
             }
 
@@ -121,7 +119,7 @@ export function LoginForm() {
             router.replace("/dashboard");
           } catch {
             setFormMessage(
-              "The frontend could not reach the StakeLoop API. Check STAKELOOP_API_BASE_URL and try again.",
+              "We couldn't connect to Stakeloop right now. Please try again in a moment.",
             );
           } finally {
             setIsSubmitting(false);
@@ -155,7 +153,7 @@ export function LoginForm() {
             </span>
             <a
               className="text-sm font-extrabold text-sky-700 transition hover:text-sky-800"
-              href="mailto:support@stakeloop.io?subject=StakeLoop%20Password%20Reset"
+              href="mailto:support@stakeloop.io?subject=Stakeloop%20Password%20Reset"
             >
               Forgot password?
             </a>

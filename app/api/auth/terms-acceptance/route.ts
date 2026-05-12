@@ -1,50 +1,49 @@
 import { NextResponse } from "next/server";
 
-import { type AuthSessionPayload } from "@/lib/stakeloop-api";
+import type {
+  BackendUser,
+  OnboardingStatus,
+} from "@/lib/stakeloop-api";
 import {
   clearSessionCookie,
   getAuthToken,
   requestBackend,
 } from "@/lib/stakeloop-session";
 
-export async function PUT(request: Request) {
+type TermsAcceptancePayload = {
+  accepted_at?: string | null;
+  message?: string;
+  ok?: boolean;
+  status?: OnboardingStatus;
+  user?: BackendUser;
+};
+
+export async function POST() {
   const token = await getAuthToken();
 
   if (!token) {
     return NextResponse.json(
       {
         ok: false,
-        message: "Log in again to complete your profile.",
+        message: "Log in again to review and accept the terms.",
       },
       { status: 401 },
     );
   }
 
-  const body = (await request.json().catch(() => null)) as
-    | Record<string, unknown>
-    | null;
-
-  if (!body) {
-    return NextResponse.json(
-      {
-        ok: false,
-        message: "Invalid request body.",
-      },
-      { status: 400 },
-    );
-  }
-
   try {
-    const result = await requestBackend<AuthSessionPayload>("/api/auth/me/profile", {
-      method: "PUT",
-      body,
-      token,
-    });
+    const result = await requestBackend<TermsAcceptancePayload>(
+      "/api/auth/me/terms/accept",
+      {
+        method: "POST",
+        token,
+      },
+    );
 
     const response = NextResponse.json(
       result.payload ?? {
         ok: false,
-        message: "Unable to update your profile right now.",
+        message: "We couldn't save your acceptance right now. Please try again.",
       },
       { status: result.status },
     );

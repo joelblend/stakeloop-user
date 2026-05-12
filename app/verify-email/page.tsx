@@ -4,9 +4,9 @@ import { Suspense } from "react";
 import { VerifyEmailContent } from "@/components/auth/verify-email-content";
 
 export const metadata: Metadata = {
-  title: "Verify Your Email | StakeLoop",
+  title: "Verify Your Email | Stakeloop",
   description:
-    "Check your inbox to verify your StakeLoop account and complete registration.",
+    "Check your inbox to verify your Stakeloop account and complete registration.",
 };
 
 export default function VerifyEmailPage() {

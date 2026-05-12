@@ -1,6 +1,5 @@
 import "server-only";
 
-import { cache } from "react";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -11,6 +10,7 @@ import {
 } from "@/lib/stakeloop-api";
 
 export const AUTH_COOKIE_NAME = "stakeloop_session";
+export const TWO_FACTOR_PENDING_COOKIE_NAME = "stakeloop_2fa_pending";
 
 const AUTH_COOKIE_MAX_AGE = 60 * 60 * 24 * 30;
 
@@ -57,6 +57,18 @@ function authCookieConfig(value: string) {
   };
 }
 
+function pendingTwoFactorCookieConfig(value: string) {
+  return {
+    httpOnly: true,
+    maxAge: AUTH_COOKIE_MAX_AGE,
+    name: TWO_FACTOR_PENDING_COOKIE_NAME,
+    path: "/",
+    sameSite: "lax" as const,
+    secure: process.env.NODE_ENV === "production",
+    value,
+  };
+}
+
 export async function requestBackend<T>(
   path: string,
   options: BackendRequestOptions = {},
@@ -82,12 +94,17 @@ export async function requestBackend<T>(
   };
 }
 
-export const getAuthToken = cache(async function getAuthToken() {
+export async function getAuthToken() {
   const cookieStore = await cookies();
   return cookieStore.get(AUTH_COOKIE_NAME)?.value ?? null;
-});
+}
 
-export const getServerSession = cache(async function getServerSession() {
+export async function hasPendingTwoFactor() {
+  const cookieStore = await cookies();
+  return cookieStore.get(TWO_FACTOR_PENDING_COOKIE_NAME)?.value === "1";
+}
+
+export async function getServerSession() {
   const token = await getAuthToken();
 
   if (!token) {
@@ -102,18 +119,40 @@ export const getServerSession = cache(async function getServerSession() {
     return null;
   }
 
+  if (await hasPendingTwoFactor()) {
+    return {
+      ...result.payload,
+      requires_2fa: true,
+    };
+  }
+
   return result.payload;
-});
+}
 
 export function clearSessionCookie(response: NextResponse) {
   response.cookies.set({
     ...authCookieConfig(""),
     maxAge: 0,
   });
+  response.cookies.set({
+    ...pendingTwoFactorCookieConfig(""),
+    maxAge: 0,
+  });
 }
 
 export function setSessionCookie(response: NextResponse, token: string) {
   response.cookies.set(authCookieConfig(token));
+}
+
+export function clearPendingTwoFactorCookie(response: NextResponse) {
+  response.cookies.set({
+    ...pendingTwoFactorCookieConfig(""),
+    maxAge: 0,
+  });
+}
+
+export function setPendingTwoFactorCookie(response: NextResponse) {
+  response.cookies.set(pendingTwoFactorCookieConfig("1"));
 }
 
 export function stripToken<T extends { token?: string }>(payload: T): Omit<T, "token"> {

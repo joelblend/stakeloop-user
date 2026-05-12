@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import "./globals.css";
 import VisitorTracker from "@/components/analytics/visitor-tracker";
 
 export const metadata: Metadata = {
-  title: "StakeLoop User",
+  title: "Stakeloop User",
   description:
-    "StakeLoop user frontend for transparent pooled bankroll participation.",
+    "Stakeloop member experience for transparent pooled bankroll participation.",
 };
 
 export default function RootLayout({
@@ -16,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full scroll-smooth antialiased">
       <body className="min-h-full flex flex-col">
-        <VisitorTracker />
+        <Suspense fallback={null}>
+          <VisitorTracker />
+        </Suspense>
         {children}
       </body>
     </html>

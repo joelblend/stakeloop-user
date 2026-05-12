@@ -44,7 +44,7 @@ export function WaitlistForm({
   async function submitEmail(nextEmail: string) {
     setState({
       kind: "idle",
-      message: "Sending your request to StakeLoop...",
+      message: "Sending your request to Stakeloop...",
     });
 
     try {
@@ -79,7 +79,7 @@ export function WaitlistForm({
       setState({
         kind: "error",
         message:
-          "StakeLoop could not reach the API right now. Check your backend URL and try again.",
+          "We couldn't connect to Stakeloop right now. Please try again in a moment.",
       });
     }
   }

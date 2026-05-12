@@ -104,7 +104,7 @@ export function VerifyEmailContent() {
           <div className="w-full max-w-md">
             <div className="mb-12">
               <span className="text-2xl font-black tracking-tight text-slate-950">
-                StakeLoop
+                Stakeloop
               </span>
             </div>
 
@@ -161,7 +161,7 @@ export function VerifyEmailContent() {
                       setFeedback({
                         tone: "error",
                         text:
-                          "The frontend could not reach the StakeLoop API. Check STAKELOOP_API_BASE_URL and try again.",
+                          "We couldn't connect to Stakeloop right now. Please try again in a moment.",
                       });
                     } finally {
                       setIsResending(false);
@@ -214,7 +214,7 @@ export function VerifyEmailContent() {
                       setFeedback({
                         tone: "error",
                         text:
-                          "The frontend could not reach the StakeLoop API. Check STAKELOOP_API_BASE_URL and try again.",
+                          "We couldn't connect to Stakeloop right now. Please try again in a moment.",
                       });
                     } finally {
                       setIsResending(false);

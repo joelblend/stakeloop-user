@@ -41,7 +41,7 @@ export function VerifyEmailSuccessView() {
               </h1>
               <p className="text-base leading-8 text-slate-500">
                 Your account is now active and ready. You can now access your
-                StakeLoop dashboard and track your performance.
+                Stakeloop dashboard and track your performance.
               </p>
             </div>
 
@@ -56,7 +56,7 @@ export function VerifyEmailSuccessView() {
                 Need help?{" "}
                 <a
                   className="font-extrabold text-sky-700 transition hover:text-sky-800 hover:underline"
-                  href="mailto:support@stakeloop.io?subject=StakeLoop%20Support"
+                  href="mailto:support@stakeloop.io?subject=Stakeloop%20Support"
                 >
                   Contact support
                 </a>

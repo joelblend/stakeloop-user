@@ -8,9 +8,9 @@ import { getPostAuthRedirect } from "@/lib/stakeloop-routing";
 import { getServerSession } from "@/lib/stakeloop-session";
 
 export const metadata: Metadata = {
-  title: "Create Account | StakeLoop",
+  title: "Create Account | Stakeloop",
   description:
-    "Create your StakeLoop account to start tracking transparent sports performance.",
+    "Create your Stakeloop account to start tracking transparent sports performance.",
 };
 
 const highlights = [
@@ -46,7 +46,7 @@ export default async function RegisterPage() {
 
             <div className="space-y-3">
               <h1 className="text-4xl font-black tracking-tight text-slate-950 sm:text-[3.2rem]">
-                Join StakeLoop
+                Join Stakeloop
               </h1>
               <p className="max-w-sm text-base leading-8 text-slate-500">
                 The transparent way to track sports performance.

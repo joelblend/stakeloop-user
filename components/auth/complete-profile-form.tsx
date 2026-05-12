@@ -211,6 +211,7 @@ export function CompleteProfileForm({ user }: CompleteProfileFormProps) {
 
   useEffect(() => {
     router.prefetch("/dashboard");
+    router.prefetch("/terms-of-use");
   }, [router]);
 
   function clearBankResolutionIfDirty(nextCode: string, nextAccountNumber: string) {
@@ -279,7 +280,7 @@ export function CompleteProfileForm({ user }: CompleteProfileFormProps) {
 
         setBanks([]);
         setBanksError(
-          "The frontend could not reach the StakeLoop API. Check STAKELOOP_API_BASE_URL and try again.",
+          "We couldn't connect to Stakeloop right now. Please try again in a moment.",
         );
       } finally {
         if (isActive) {
@@ -380,7 +381,7 @@ export function CompleteProfileForm({ user }: CompleteProfileFormProps) {
       setFormMessage({
         tone: "error",
         text:
-          "The frontend could not reach the StakeLoop API. Check STAKELOOP_API_BASE_URL and try again.",
+          "We couldn't connect to Stakeloop right now. Please try again in a moment.",
       });
       return false;
     } finally {
@@ -486,12 +487,12 @@ export function CompleteProfileForm({ user }: CompleteProfileFormProps) {
             return;
           }
 
-          router.replace("/dashboard");
+          router.replace("/terms-of-use");
         } catch {
           setFormMessage({
             tone: "error",
             text:
-              "The frontend could not reach the StakeLoop API. Check STAKELOOP_API_BASE_URL and try again.",
+              "We couldn't connect to Stakeloop right now. Please try again in a moment.",
           });
         } finally {
           setIsSubmitting(false);

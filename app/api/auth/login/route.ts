@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 
 import { type AuthSessionPayload } from "@/lib/stakeloop-api";
 import {
+  clearPendingTwoFactorCookie,
   requestBackend,
+  setPendingTwoFactorCookie,
   setSessionCookie,
   stripToken,
 } from "@/lib/stakeloop-session";
@@ -41,6 +43,11 @@ export async function POST(request: Request) {
 
     if (result.ok && payload && "token" in payload && payload.token) {
       setSessionCookie(response, payload.token);
+      if (payload.requires_2fa) {
+        setPendingTwoFactorCookie(response);
+      } else {
+        clearPendingTwoFactorCookie(response);
+      }
     }
 
     return response;
@@ -49,7 +56,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         message:
-          "The frontend could not reach the StakeLoop API. Check STAKELOOP_API_BASE_URL and try again.",
+          "We couldn't connect to Stakeloop right now. Please try again in a moment.",
       },
       { status: 502 },
     );

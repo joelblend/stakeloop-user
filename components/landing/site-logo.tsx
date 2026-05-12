@@ -12,7 +12,7 @@ export function SiteLogo({ compact = false }: SiteLogoProps) {
       </span>
       {!compact ? (
         <span className="text-lg font-extrabold tracking-tight text-slate-950">
-          StakeLoop
+          Stakeloop
         </span>
       ) : null}
     </span>

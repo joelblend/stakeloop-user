@@ -6,6 +6,12 @@ import type {
   ActiveSlotOfferPayload,
   UserPurchasesPayload,
 } from "@/lib/stakeloop-api";
+import {
+  normalizeWalletCategory,
+  normalizeWalletLimit,
+  normalizeWalletMonth,
+  normalizeWalletPage,
+} from "@/lib/dashboard-wallet";
 import { getPostAuthRedirect } from "@/lib/stakeloop-routing";
 import {
   getAuthToken,
@@ -14,9 +20,9 @@ import {
 } from "@/lib/stakeloop-session";
 
 export const metadata: Metadata = {
-  title: "Dashboard | StakeLoop",
+  title: "Dashboard | Stakeloop",
   description:
-    "Track your verified onboarding state, live slot offers, and recent StakeLoop activity from one dashboard.",
+    "Track your verified onboarding state, live slot offers, recent activity, and monthly performance from one dashboard.",
 };
 
 function getNextOfferMonthKey() {
@@ -27,7 +33,28 @@ function getNextOfferMonthKey() {
   return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
 }
 
-export default async function DashboardPage() {
+type DashboardPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+function firstParam(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function DashboardPage({
+  searchParams,
+}: DashboardPageProps) {
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const requestedTab = firstParam(resolvedSearchParams?.tab);
+  const activeTab = requestedTab === "performance" ? "performance" : "overview";
+  const walletCategory = normalizeWalletCategory(
+    firstParam(resolvedSearchParams?.wallet_category),
+  );
+  const walletMonth = normalizeWalletMonth(
+    firstParam(resolvedSearchParams?.wallet_month),
+  );
+  const walletPage = normalizeWalletPage(firstParam(resolvedSearchParams?.wallet_page));
+  const walletLimit = normalizeWalletLimit(firstParam(resolvedSearchParams?.wallet_limit));
   const token = await getAuthToken();
   const [session, offerResult] = await Promise.all([
     getServerSession(),
@@ -42,12 +69,10 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  if (!session.status.email_verified) {
-    redirect(getPostAuthRedirect(session));
-  }
+  const nextPath = getPostAuthRedirect(session);
 
-  if (!session.status.profile_completed) {
-    redirect("/complete-profile");
+  if (nextPath !== "/dashboard") {
+    redirect(nextPath);
   }
 
   const activeOffer =
@@ -55,9 +80,18 @@ export default async function DashboardPage() {
       ? offerResult.payload
       : null;
   const purchasesMonth = activeOffer?.month ?? getNextOfferMonthKey();
+  const purchasesQuery = new URLSearchParams({
+    month: purchasesMonth,
+    wallet_category: walletCategory,
+    wallet_page: String(walletPage),
+    wallet_limit: String(walletLimit),
+  });
+  if (walletMonth) {
+    purchasesQuery.set("wallet_month", walletMonth);
+  }
   const purchasesResult = token
     ? await requestBackend<UserPurchasesPayload>(
-        `/api/user/slots/me?month=${encodeURIComponent(purchasesMonth)}`,
+        `/api/user/slots/me?${purchasesQuery.toString()}`,
         {
           token,
         },
@@ -73,6 +107,7 @@ export default async function DashboardPage() {
   return (
     <UserDashboard
       activeOffer={activeOffer}
+      activeTab={activeTab}
       purchases={purchases}
       session={session}
     />
